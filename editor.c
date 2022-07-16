@@ -171,7 +171,7 @@
 
 #include "art/editor/labs/ecs.c"
 
-#define EDITOR_VERSION "2022.6"
+#define EDITOR_VERSION "2022.7"
 
 #if 1
 #define EDITOR_PRINTF PRINTF

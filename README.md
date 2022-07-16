@@ -273,14 +273,14 @@ echo OSX      && cc -ObjC -dynamiclib -o libfwk.dylib fwk.c -framework cocoa -fr
 echo // This C file is a header that you can #include.  Do #define FWK_C  > fwk-single-header.h
 echo // early in **one** C compilation unit to unroll the implementation >> fwk-single-header.h
 echo // The FWK_C symbol **must be defined in a C file**; C++ wont work. >> fwk-single-header.h
-type art\editor\tools\3rd\3rd_glad.h >> fwk-single-header.h
-type fwk.h                           >> fwk-single-header.h
-echo #ifdef FWK_C                    >> fwk-single-header.h
-echo #pragma once                    >> fwk-single-header.h
-echo #define FWK_3RD                 >> fwk-single-header.h
-type fwk                             >> fwk-single-header.h
-type fwk.c                           >> fwk-single-header.h
-echo #endif // FWK_C                 >> fwk-single-header.h
+type art\docs\ref\3rd\3rd_glad.h >> fwk-single-header.h
+type fwk.h                       >> fwk-single-header.h
+echo #ifdef FWK_C                >> fwk-single-header.h
+echo #pragma once                >> fwk-single-header.h
+echo #define FWK_3RD             >> fwk-single-header.h
+type fwk                         >> fwk-single-header.h
+type fwk.c                       >> fwk-single-header.h
+echo #endif // FWK_C             >> fwk-single-header.h
 ```
 
 ## Extra tips
