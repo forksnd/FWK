@@ -144,14 +144,10 @@ bool ModelLoad( Model *G, const char *_path ) {
 
         // By importing materials before meshes we can investigate whether a mesh is transparent and flag it as such.
         const pbr_material_t* mtl = G->materials ? &G->materials[mesh.material_idx] : NULL;
+        mesh.transparent = false;
         if( mtl ) {
-            if( mtl->albedo.texture ) {
-                mesh.transparent = mtl->albedo.texture->transparent;
-            } else {
-                mesh.transparent = mtl->albedo.color.a < 1.0f;
-            }
-        } else {
-            mesh.transparent = false;
+            mesh.transparent |= mtl->albedo .texture ? mtl->albedo .texture->transparent : mtl->albedo .color.a < 1.0f;
+            mesh.transparent |= mtl->diffuse.texture ? mtl->diffuse.texture->transparent : mtl->diffuse.color.a < 1.0f;
         }
 
         array_push(G->meshes, mesh);
@@ -182,13 +178,13 @@ void ModelRender( Model *G, const mat44 _worldRootMatrix ) {
 
     shader_vec4("global_ambient", vec4(1,1,1,1)); // unused
 
-    // loop twice: first opaque, then transparent
-    for(int j = 0; j < 2; ++j) {
-        bool bTransparentPass = (bool)j;
+    // loop thrice: first opaque, then transparent backface, then transparent frontface
+    for(int j = 0; j < 3; ++j) {
+        bool bTransparentPass = j > 0;
         if(bTransparentPass) {
             glEnable( GL_BLEND );
-            glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
-            glDepthMask( GL_FALSE);
+            glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+            glCullFace( j == 1 ? GL_FRONT : GL_BACK ); // glDepthMask( GL_FALSE);
         }
 
         mat44 mat_world; copy44(mat_world, _worldRootMatrix); // @fixme mMatrices[ node.mID ] * _worldRootMatrix
@@ -221,7 +217,7 @@ void ModelRender( Model *G, const mat44 _worldRootMatrix ) {
 
         if(bTransparentPass) {
             glDisable( GL_BLEND );
-            glDepthMask( GL_TRUE );
+            // glDepthMask( GL_TRUE );
         }
     }
 

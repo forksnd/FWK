@@ -288,13 +288,13 @@ if "%1"=="github" (
     call make.bat bindings
 
     call make.bat split
-    rd /q /s art\editor\tools\fwk
-    md art\editor\tools\fwk
-    md art\editor\tools\fwk\3rd
-    move /y fwk_*.? art\editor\tools\fwk\
-    move /y 3rd_*.? art\editor\tools\fwk\3rd\
-    echo.> "art\editor\tools\fwk\;. for browsing purposes only. do not compile these"
-    echo.> "art\editor\tools\fwk\3rd\;. for browsing purposes only. do not compile these"
+    rd /q /s art\docs\ref
+    md art\docs\ref
+    md art\docs\ref\3rd
+    move /y fwk_*.? art\docs\ref\
+    move /y 3rd_*.? art\docs\ref\3rd\
+    echo.> "art\docs\ref\;. for browsing purposes only. do not compile these"
+    echo.> "art\docs\ref\3rd\;. for browsing purposes only. do not compile these"
 
     call make.bat tidy
 
